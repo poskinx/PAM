@@ -57,11 +57,13 @@
 
 	
 	if (mysqli_num_rows($result) > 0) {
-			// output data of username row
-			while($row = $result->fetch_assoc()) {
-        echo  $row["username"]. "<br>";
+        // output data of username row
+        while($row = $result->fetch_assoc()) {
+            echo  $row["username"]. "<br>";
+        }
+        echo "<br>";
+        go_back();
     }
-		} 		
 		else 
         {
 			echo "0 results";
@@ -77,7 +79,8 @@
                 VALUES ('$username1','$password1','$realname1')";
 
        if (mysqli_query($conn, $sql)) {
-            echo "Signed up successfully!";
+           echo "<p>Signed up successfully!</p>";
+           go_back();
         } else {
             echo "Error: " . $sql . "<br>" . mysqli_error($conn);
         }
@@ -96,7 +99,9 @@
         if ($row["password"] == $password1){
             $sql = "DELETE FROM users WHERE password='$password1'";
             if ($conn->query($sql) === TRUE) {
-                echo "User deleted successfully!";
+                echo "<p> User deleted successfully! </p>";
+                //echo "<a href = 'index.html'> Go back </a>";
+                go_back();
             } else {
                 echo "Error deleting record: " . $conn->error;
             }
@@ -121,10 +126,15 @@
             WHERE password='$password1'";
             if ($conn->query($sql) === TRUE) {
                 echo "User updated successfully!";
+                go_back();
             } else {
                 echo "Error updating record: " . $conn->error;
             }
         } else {echo "Wrong user or password!";}//Else we dont apply any change
+    }
+
+    function go_back (){
+        echo "<a href = 'index.html'> <h3> Go back </h3> <a>";
     }
 ?>
 
