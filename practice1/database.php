@@ -51,44 +51,53 @@
     // Display all users in the list
     function list_users ($conn)
 	{
-	$sql = "SELECT username from `users`";
-	
-	$result = mysqli_query($conn, $sql);
+        $sql = "SELECT username from `users`";
+        $result = mysqli_query($conn, $sql);
 
-	
-	if (mysqli_num_rows($result) > 0) {
-        // output data of username row
-        while($row = $result->fetch_assoc()) {
-            echo  $row["username"]. "<br>";
+        if (mysqli_num_rows($result) > 0) {
+            // output data of username row
+            while($row = $result->fetch_assoc()) {
+                echo  $row["username"]. "<br>";
+            }
+            echo "<br>";
+            go_back();
         }
-        echo "<br>";
-        go_back();
-    }
-		else 
-        {
-			echo "0 results";
-		}			
+            else
+            {
+                echo "There are no users";
+            }
 	}
 
 //%%%%%%%%%%%  ADD USERS  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     function add_user ($conn)
-    {	$username1 = $_POST["username"];
+    {
+        $username1 = $_POST["username"];
 		$password1 = $_POST["password"];
 		$realname1 = $_POST["realname"];
-        $sql = "INSERT INTO users (username,password,realname)
-                VALUES ('$username1','$password1','$realname1')";
 
-       if (mysqli_query($conn, $sql)) {
-           echo "<p>Signed up successfully!</p>";
-           go_back();
+        $sql = "SELECT password FROM users WHERE username='$username1'";
+        $result = mysqli_query($conn, $sql);
+
+        if (mysqli_num_rows($result) != 0)
+        {
+            echo "Username already exists";
+            go_back();
         } else {
-            echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+            $sql = "INSERT INTO users (username,password,realname)
+                    VALUES ('$username1','$password1','$realname1')";
+                if (mysqli_query($conn, $sql)) {
+                    echo "<p>Signed up successfully!</p>";
+                    go_back();
+                } else {
+                    echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+                }
         }
     }
 
 //%%%%%%%%%%%  DELETE USERS  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	function delete_user ($conn)
-	{	$password1 = $_POST["password"];
+function delete_user ($conn)
+	{
+	    $password1 = $_POST["password"];
         $username1 = $_POST["username"];
 
         //Get the row (username,password & realname) related to the input username
@@ -97,20 +106,20 @@
 
         //If the password introduced is equal to the one related to the input username, we delete the user
         if ($row["password"] == $password1){
-            $sql = "DELETE FROM users WHERE password='$password1'";
+            $sql = "DELETE FROM users WHERE username='$username1'";
             if ($conn->query($sql) === TRUE) {
                 echo "<p> User deleted successfully! </p>";
-                //echo "<a href = 'index.html'> Go back </a>";
                 go_back();
             } else {
                 echo "Error deleting record: " . $conn->error;
             }
-        } else {echo "Wrong user or password!";}//Else we dont delete the user
+        } else {echo "Wrong user or password!";}//Else we don't delete the user
 	}
 
 //%%%%%%%%%%%  MODIFY USERS  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     function modify_user ($conn)
-    {	$password1 = $_POST["password"];
+    {
+        $password1 = $_POST["password"];
         $username1 = $_POST["username"];
 		$new_password = $_POST["new_password"];
 		$new_username = $_POST["new_username"];
@@ -123,7 +132,7 @@
         //If the password introduced is equal to the one related to the input username, we apply the changes
         if ($row["password"] == $password1){
             $sql = "UPDATE users SET username='$new_username',password='$new_password',realname='$new_realname'
-            WHERE password='$password1'";
+            WHERE username='$username1'";
             if ($conn->query($sql) === TRUE) {
                 echo "User updated successfully!";
                 go_back();
@@ -134,7 +143,8 @@
     }
 //%%%%%%%%%%%  Go back function  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-    function go_back (){
+    function go_back ()
+    {
         echo "<a href = 'index.html'> <h3> Go back </h3> <a>";
     }
 ?>
