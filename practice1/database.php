@@ -132,6 +132,7 @@
             }
         } else {echo "Wrong user or password!";}//Else we dont apply any change
     }
+//%%%%%%%%%%%  Go back function  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
     function go_back (){
         echo "<a href = 'index.html'> <h3> Go back </h3> <a>";
