@@ -96,17 +96,20 @@
         if ($row["password"] == $password1){
             $sql = "DELETE FROM users WHERE password='$password1'";
             if ($conn->query($sql) === TRUE) {
-                echo "Record deleted successfully";
+                echo "User deleted successfully!";
             } else {
                 echo "Error deleting record: " . $conn->error;
             }
-        } else {echo "Wrong user or password";}//Else we dont delete the user
+        } else {echo "Wrong user or password!";}//Else we dont delete the user
 	}
 
 //%%%%%%%%%%%  MODIFY USERS  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    function delete_user ($conn)
+    function modify_user ($conn)
     {	$password1 = $_POST["password"];
         $username1 = $_POST["username"];
+		$new_password = $_POST["new_password"];
+		$new_username = $_POST["new_username"];
+		$new_realname = $_POST["new_realname"];
 
         //Get the row (username,password & realname) related to the input username
         $sql = "SELECT password FROM users WHERE username='$username1'";
@@ -114,8 +117,14 @@
 
         //If the password introduced is equal to the one related to the input username, we apply the changes
         if ($row["password"] == $password1){
-
-        } else {echo "Wrong user or password";}//Else we dont apply any change
+            $sql = "UPDATE users SET username='$new_username',password='$new_password',realname='$new_realname'
+            WHERE password='$password1'";
+            if ($conn->query($sql) === TRUE) {
+                echo "User updated successfully!";
+            } else {
+                echo "Error updating record: " . $conn->error;
+            }
+        } else {echo "Wrong user or password!";}//Else we dont apply any change
     }
 ?>
 

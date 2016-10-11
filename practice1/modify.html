@@ -5,13 +5,23 @@
 		<title> Modify an existant user </title>
 	</head>
 	<body>
-		<p> Type the username you want to modify </p>
-		<form action="modify.php">
+		<h2> Modify user </h2>
+		<p> Enter the user to modify </p>
+		<form action="modify.php" method="post">
 			username:
 			<input type="text" name="username" value=""><br><br>
 			password:
 			<input type="password" name="password" value=""><br><br>
-			<input type="submit" value="Submit">
+
+            Now enter the new data<br><br>
+            username:
+            <input type="text" name="new_username" value=""><br><br>
+            real name:
+            <input type="text" name="new_realname" value=""><br><br>
+            password:
+            <input type="password" name="new_password" value=""><br><br>
+
+			<input type="submit" value="Submit"><br><br>
 		</form>
 
 		<a href = "index.html"> <h3> Go back </h3></a> </li>
